@@ -99,6 +99,14 @@ namespace MacroScope
         /// </summary>
         public static readonly string SUBSTR = "substr";
 
+
+        /// <summary>Jet locate function. </summary>
+        /// <remarks>
+        ///    	SQL:LOCATE( stringToFind, stringToSearch  [, start] )
+        ///     ACCESS: Instr ( [start], stringToSearch, stringToFind)
+        /// </remarks>
+        public static readonly string LOCATE = "locate";
+
         /// <summary>
         /// Standard string transformation function, not known
         /// by MS Access and Oracle.

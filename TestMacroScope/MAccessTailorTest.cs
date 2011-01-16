@@ -125,10 +125,10 @@ LEFT OUTER JOIN village ON settlement.village_id = village.village_id",
                 expected.ToString());
 
             expected = new StringBuilder();
-            expected.Append("SELECT address.address_id, ");
+            expected.Append("SELECT  address.address_id, ");
             expected.Append("building.number_type, building.number_value\r\n");
             expected.Append("FROM address, building");
-            CheckSelect(@"SELECT address.address_id,
+            CheckSelect(@"SELECT CAST(ROUND(ytd_sales/price, 0) AS int) , address.address_id,
 building.number_type, building.number_value
 FROM address
 CROSS JOIN building", expected.ToString());

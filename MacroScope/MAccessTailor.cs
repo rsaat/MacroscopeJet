@@ -223,6 +223,10 @@ namespace MacroScope
             {
                 CoalesceToIif(node);
             }
+            else if (name.Equals(TailorUtil.LOCATE))
+            {
+                LocateToInstr(node);
+            }
         }
 
         public override void PerformAfter(FunctionCall node)
@@ -564,6 +568,41 @@ namespace MacroScope
             }
 
             return top;
+        }
+
+        void LocateToInstr(FunctionCall locate)
+        {
+            ExpressionItem args = locate.ExpressionArguments;
+            FunctionCall instr = (FunctionCall)MakeInStr(args);
+            locate.Name = instr.Name;
+            locate.ExpressionArguments = instr.ExpressionArguments;
+
+        }
+
+        INode MakeInStr(ExpressionItem args)
+        {
+            FunctionCall instr = new FunctionCall("instr");
+
+            Stringifier stringifier = new Stringifier();
+            args.Traverse(stringifier);
+            var txt = stringifier.ToSql();
+
+            var stringToFind = args;
+
+            stringToFind.Traverse(stringifier);
+            txt = stringifier.ToSql();
+
+            var stringToSearch = stringToFind.Next;
+
+            stringToFind.Traverse(stringifier);
+            txt = stringifier.ToSql();
+
+            var start = stringToSearch.Next;
+
+            instr.ExpressionArguments = new ExpressionItem(start);
+                     //instr.ExpressionArguments.Add(stringToFind);
+            return instr; 
+            
         }
 
         void CoalesceToIif(FunctionCall coalesce)
